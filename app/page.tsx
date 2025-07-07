@@ -160,7 +160,6 @@ export default function Chat() {
     };
 
     init();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
