@@ -14,28 +14,31 @@ export const prunedMessages = (messages: UIMessage[]): UIMessage[] => {
   }
 
   return messages.map((message) => {
-    // check if last message part is a tool invocation in a call state, then append a part with the tool result
-    message.parts = message.parts.map((part) => {
-      if (part.type === "tool-invocation") {
-        if (
-          part.toolInvocation.toolName === "computer" &&
-          part.toolInvocation.args.action === "screenshot"
-        ) {
-          return {
-            ...part,
-            toolInvocation: {
-              ...part.toolInvocation,
-              result: {
-                type: "text",
-                text: "Image redacted to save input tokens",
+    // Only process messages that have parts
+    if (message.parts && Array.isArray(message.parts)) {
+      // check if last message part is a tool invocation in a call state, then append a part with the tool result
+      message.parts = message.parts.map((part) => {
+        if (part.type === "tool-invocation") {
+          if (
+            part.toolInvocation.toolName === "computer" &&
+            part.toolInvocation.args.action === "screenshot"
+          ) {
+            return {
+              ...part,
+              toolInvocation: {
+                ...part.toolInvocation,
+                result: {
+                  type: "text",
+                  text: "Image redacted to save input tokens",
+                },
               },
-            },
-          };
+            };
+          }
+          return part;
         }
         return part;
-      }
-      return part;
-    });
+      });
+    }
     return message;
   });
 };
