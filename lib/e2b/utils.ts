@@ -1,7 +1,7 @@
 "use server";
 
 import { Sandbox } from "@e2b/desktop";
-import { resolution } from "./tool";
+import { resolution } from "../mistral/tools";
 
 export const getDesktop = async (id?: string) => {
   try {
